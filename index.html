@@ -2,98 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A personal digital love letter for Ria.">
-  <title>For Ria — A Little Love Letter</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Student OS — a private, offline-first study workspace.">
+  <title>Student OS — Focus better</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-  <button class="music-toggle" id="musicToggle" type="button" aria-label="Play romantic music">♫ <span>Music</span></button>
-  <audio id="music" loop preload="none" src="assets/romantic-song.mp3"></audio>
-  <main>
-    <section class="hero section" id="intro" aria-labelledby="intro-title">
-      <div class="ambient" aria-hidden="true"></div>
-      <div class="hero-content reveal">
-        <p class="eyebrow">A little something, made just for you</p>
-        <h1 id="intro-title">Hey <em>Ria</em>...</h1>
-        <p class="hero-subtitle">I made something special for you <span aria-hidden="true">♥</span></p>
-        <button class="primary-button scroll-button" data-target="message" type="button">Start the journey <span>♥</span></button>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">✦</div><div><strong>Student OS</strong><span>your quiet advantage</span></div></div>
+      <button class="mobile-close" id="closeSidebar" aria-label="Close menu">×</button>
+      <nav class="nav" aria-label="Main navigation">
+        <p class="nav-label">Workspace</p>
+        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-item" data-view="tasks"><span>✓</span> Tasks <b class="nav-count" id="taskCount">0</b></button>
+        <button class="nav-item" data-view="notes"><span>▤</span> Notes</button>
+        <button class="nav-item" data-view="subjects"><span>◈</span> Subjects</button>
+        <button class="nav-item" data-view="planner"><span>□</span> Planner</button>
+        <p class="nav-label">Focus</p>
+        <button class="nav-item" data-view="focus"><span>◷</span> Focus timer</button>
+        <button class="nav-item" data-view="stats"><span>↗</span> Statistics</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="streak-mini"><span class="fire">♨</span><div><strong id="sideStreak">0 day streak</strong><small>Keep the momentum</small></div></div><button class="theme-button" id="themeToggle" type="button">☾ <span>Dark mode</span></button><p class="privacy-note">⌁ Stored locally on this device</p></div>
+    </aside>
+    <div class="backdrop" id="backdrop"></div>
+    <main class="main-content">
+      <header class="topbar"><button class="menu-button" id="openSidebar" aria-label="Open menu">☰</button><div class="breadcrumb">Workspace <span>/</span> <strong id="pageName">Dashboard</strong></div><div class="top-actions"><button class="icon-button" id="exportBtn" title="Export backup">⇩<span class="tooltip">Export backup</span></button><label class="icon-button" title="Import backup">⇧<input id="importInput" type="file" accept="application/json" hidden><span class="tooltip">Import backup</span></label><div class="avatar">S</div></div></header>
+      <div class="content-wrap">
+        <section class="view active" id="dashboardView">
+          <div class="welcome-row"><div><p class="overline">Your private workspace</p><h1>Good morning, <em>scholar.</em></h1><p class="muted">Make today count. One focused session at a time.</p></div><button class="primary" data-view="focus">Start focus session <span>→</span></button></div>
+          <div class="stat-grid"><article class="stat-card accent"><span class="stat-icon">◷</span><div><small>Focus time</small><strong id="dashFocus">0m</strong><span class="trend">Today</span></div></article><article class="stat-card"><span class="stat-icon purple">✓</span><div><small>Tasks complete</small><strong id="dashTasks">0/0</strong><span class="trend" id="dashTaskTrend">Start your list</span></div></article><article class="stat-card"><span class="stat-icon orange">♨</span><div><small>Study streak</small><strong id="dashStreak">0 days</strong><span class="trend">Best: <span id="bestStreak">0</span> days</span></div></article><article class="stat-card"><span class="stat-icon blue">◈</span><div><small>Overall progress</small><strong id="dashProgress">0%</strong><span class="trend">Across subjects</span></div></article></div>
+          <div class="dashboard-grid"><article class="panel progress-panel"><div class="panel-head"><div><p class="overline">Daily progress</p><h2>Your day at a glance</h2></div><span class="date-pill">Today</span></div><div class="daily-progress"><div class="ring" id="dailyRing"><strong id="dailyPercent">0%</strong><small>complete</small></div><div class="progress-copy"><h3 id="dailyHeadline">A fresh start.</h3><p>Complete your tasks and log a focus session to fill your day.</p><div class="bar"><span id="dailyBar"></span></div><small><b id="dailyDone">0</b> of <b id="dailyTotal">0</b> planned tasks</small></div></div></article><article class="panel today-panel"><div class="panel-head"><div><p class="overline">Up next</p><h2>Today’s plan</h2></div><button class="link-button" data-view="planner">View planner →</button></div><div id="upNext" class="up-next"></div></article></div>
+          <div class="dashboard-grid lower"><article class="panel chart-panel"><div class="panel-head"><div><p class="overline">Consistency</p><h2>Weekly focus</h2></div><span class="legend"><i></i> Minutes</span></div><div class="chart" id="weeklyChart"></div></article><article class="panel quick-panel"><div class="panel-head"><div><p class="overline">Quick capture</p><h2>What’s on your mind?</h2></div></div><textarea id="quickNote" placeholder="Jot down a thought, idea, or reminder..." rows="3"></textarea><div class="quick-footer"><span>Saved privately in Notes</span><button class="primary small" id="saveQuick">Save note <span>↗</span></button></div></article></div>
+        </section>
+        <section class="view" id="tasksView"><div class="view-heading"><div><p class="overline">Workspace / Tasks</p><h1>Task <em>manager.</em></h1><p class="muted">Turn intentions into small, finishable steps.</p></div><button class="primary" id="addTaskBtn">＋ New task</button></div><div class="toolbar"><div class="filter-tabs" id="taskFilters"><button class="active" data-filter="all">All</button><button data-filter="today">Today</button><button data-filter="active">Active</button><button data-filter="done">Completed</button></div><div class="search-wrap">⌕<input id="taskSearch" placeholder="Search tasks..."></div></div><div class="task-list" id="taskList"></div></section>
+        <section class="view" id="notesView"><div class="view-heading"><div><p class="overline">Workspace / Notes</p><h1>Your second <em>brain.</em></h1><p class="muted">Capture ideas before they drift away.</p></div><button class="primary" id="addNoteBtn">＋ New note</button></div><div class="search-wrap wide">⌕<input id="noteSearch" placeholder="Search your notes..."></div><div class="notes-grid" id="notesGrid"></div></section>
+        <section class="view" id="subjectsView"><div class="view-heading"><div><p class="overline">Workspace / Subjects</p><h1>Build your <em>edge.</em></h1><p class="muted">See where your study energy is going.</p></div><button class="primary" id="addSubjectBtn">＋ Add subject</button></div><div class="subject-grid" id="subjectGrid"></div></section>
+        <section class="view" id="plannerView"><div class="view-heading"><div><p class="overline">Workspace / Planner</p><h1>Plan with <em>intention.</em></h1><p class="muted">A simple view of what deserves your attention.</p></div><button class="primary" id="addPlanBtn">＋ Add plan</button></div><div class="planner-layout"><div class="calendar panel"><div class="calendar-head"><button class="icon-button" id="prevMonth">←</button><h2 id="monthTitle"></h2><button class="icon-button" id="nextMonth">→</button></div><div class="weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="calendar-grid" id="calendarGrid"></div></div><div class="panel plan-list"><div class="panel-head"><div><p class="overline">Selected day</p><h2 id="selectedDate">Today</h2></div></div><div id="dayPlans"></div></div></div></section>
+        <section class="view" id="focusView"><div class="view-heading"><div><p class="overline">Focus / Pomodoro</p><h1>Deep work, <em>made simple.</em></h1><p class="muted">Protect your attention. The rest can wait.</p></div></div><div class="focus-layout"><div class="timer-card panel"><div class="timer-mode"><button class="active" data-minutes="25">Focus</button><button data-minutes="5">Short break</button><button data-minutes="15">Long break</button></div><div class="timer-ring" id="timerRing"><div><strong id="timerDisplay">25:00</strong><span id="timerLabel">Ready when you are</span></div></div><div class="timer-actions"><button class="primary" id="timerStart">Start timer</button><button class="secondary" id="timerReset">Reset</button></div><p class="timer-session">Sessions today: <b id="sessionCount">0</b> · Focused: <b id="focusMinutes">0</b> min</p></div><div class="panel focus-tips"><p class="overline">A better session</p><h2>Set the bar low.<br><em>Show up anyway.</em></h2><ul><li><span>01</span>Choose one clearly defined task.</li><li><span>02</span>Put your phone somewhere inconvenient.</li><li><span>03</span>When the timer ends, take a real break.</li></ul></div></div></section>
+        <section class="view" id="statsView"><div class="view-heading"><div><p class="overline">Focus / Statistics</p><h1>Small steps, <em>compounded.</em></h1><p class="muted">Your progress is proof that consistency works.</p></div></div><div class="stats-layout"><article class="panel big-chart"><div class="panel-head"><div><p class="overline">Last 7 days</p><h2>Focus minutes</h2></div><strong class="chart-total" id="chartTotal">0m</strong></div><div class="large-bars" id="largeBars"></div></article><article class="panel subject-summary"><div class="panel-head"><div><p class="overline">Distribution</p><h2>Subject progress</h2></div></div><div id="subjectSummary"></div></article></div></section>
       </div>
-      <div class="scroll-cue" aria-hidden="true"><span></span>Scroll gently</div>
-    </section>
-
-    <section class="message section" id="message" aria-labelledby="message-title">
-      <div class="section-inner narrow reveal">
-        <p class="eyebrow">01 / A little message</p>
-        <h2 id="message-title">Some feelings deserve<br><em>their own little world.</em></h2>
-        <p class="lead typewriter" data-text="Ria, there are some things that are difficult to say in words... so I decided to create a little world for you."></p>
-        <button class="text-button scroll-button" data-target="story" type="button">Continue <span>→</span></button>
-      </div>
-    </section>
-
-    <section class="story section" id="story" aria-labelledby="story-title">
-      <div class="section-inner">
-        <p class="eyebrow reveal">02 / Our story</p>
-        <h2 class="reveal" id="story-title">The moments that<br><em>made it ours.</em></h2>
-        <p class="section-note reveal">These are editable placeholders — replace them with the moments that belong to you.</p>
-        <div class="timeline">
-          <article class="timeline-item reveal"><span class="timeline-number">01</span><div><h3>That first conversation</h3><p>[Write the memory you want to keep here.]</p></div></article>
-          <article class="timeline-item reveal"><span class="timeline-number">02</span><div><h3>The moments that made me smile</h3><p>[Add a small moment that still makes your heart warm.]</p></div></article>
-          <article class="timeline-item reveal"><span class="timeline-number">03</span><div><h3>The memories I never want to forget</h3><p>[Describe a favorite memory in your own words.]</p></div></article>
-          <article class="timeline-item reveal"><span class="timeline-number">04</span><div><h3>Everything still waiting for us...</h3><p>[Dream about what comes next.]</p></div></article>
-        </div>
-        <button class="text-button scroll-button reveal" data-target="memories" type="button">Keep going <span>→</span></button>
-      </div>
-    </section>
-
-    <section class="memories section" id="memories" aria-labelledby="memories-title">
-      <div class="section-inner">
-        <p class="eyebrow reveal">03 / Little love notes</p>
-        <h2 class="reveal" id="memories-title">Open a few things<br><em>I keep close.</em></h2>
-        <div class="memory-grid">
-          <button class="memory-card reveal" type="button" aria-label="Open love note one"><span class="card-face card-front">Open this <b>♥</b></span><span class="card-face card-back">[Add a note about what makes Ria unforgettable.]</span></button>
-          <button class="memory-card reveal" type="button" aria-label="Open love note two"><span class="card-face card-front">Open this <b>♥</b></span><span class="card-face card-back">[Write something you have always wanted to say.]</span></button>
-          <button class="memory-card reveal" type="button" aria-label="Open love note three"><span class="card-face card-front">Open this <b>♥</b></span><span class="card-face card-back">[Add a tiny promise for the days ahead.]</span></button>
-        </div>
-        <button class="text-button scroll-button reveal" data-target="letter" type="button">There is more <span>→</span></button>
-      </div>
-    </section>
-
-    <section class="letter section" id="letter" aria-labelledby="letter-title">
-      <div class="letter-paper reveal">
-        <p class="eyebrow">04 / A letter</p>
-        <h2 id="letter-title">Dear Ria,</h2>
-        <p>Some people enter our lives unexpectedly and somehow become a beautiful part of our story.</p>
-        <p>You're one of those people.</p>
-        <p class="editable"><strong>YOUR PERSONAL MESSAGE</strong><br>[Replace this section with your own heartfelt letter. Let it be honest, specific, and completely yours.]</p>
-        <p>With all my heart,<br><strong>[Your Name] <span aria-hidden="true">♥</span></strong></p>
-        <button class="primary-button scroll-button" data-target="proposal" type="button">I have one question <span>→</span></button>
-      </div>
-    </section>
-
-    <section class="proposal section" id="proposal" aria-labelledby="proposal-title">
-      <div id="celebration" class="celebration" aria-hidden="true"></div>
-      <div class="proposal-content reveal">
-        <div class="big-heart" aria-hidden="true">♥</div>
-        <p class="eyebrow">05 / The question</p>
-        <h2 id="proposal-title">Ria...</h2>
-        <p class="proposal-copy">There's one question I've been wanting to ask you.</p>
-        <h3 id="proposal-question">Will you be a part of my forever? <span>♥</span></h3>
-        <div class="proposal-actions" id="proposalActions"><button class="primary-button" id="yesButton" type="button">Yes <span>♥</span></button><button class="secondary-button" id="thinkButton" type="button">Let me think <span>😊</span></button></div>
-        <div class="yes-message" id="yesMessage" hidden><h3>YOU SAID YES! <span>♥</span></h3><p>Okay... now you've officially made my heart the happiest place in the world.</p><button class="primary-button" id="surpriseButton" type="button">One last surprise <span>✦</span></button></div>
-      </div>
-    </section>
-
-    <section class="final section" id="final" aria-labelledby="final-title">
-      <div class="final-glow" aria-hidden="true"></div>
-      <div class="final-content reveal"><p class="eyebrow">06 / Always</p><h2 id="final-title">Ria <span>♥</span></h2><p>If I could choose one person to keep beside me<br>through all the ordinary days,<br>the crazy days,<br>the beautiful days,<br>and everything in between...</p><h3>I'd choose you.<br><em>Always.</em></h3></div>
-    </section>
-  </main>
-  <button class="top-button" id="topButton" type="button" aria-label="Back to top">↑</button>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal" role="dialog" aria-modal="true"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
 </body>
 </html>
