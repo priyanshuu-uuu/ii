@@ -3,50 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="description" content="Student OS — a private, offline-first study workspace.">
-  <title>Student OS — Focus better</title>
+  <meta name="theme-color" content="#09111f">
+  <meta name="description" content="Caption Forge converts subtitle files privately in your browser.">
+  <title>Caption Forge — subtitle converter</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand"><div class="brand-mark">✦</div><div><strong>Student OS</strong><span>your quiet advantage</span></div></div>
-      <button class="mobile-close" id="closeSidebar" aria-label="Close menu">×</button>
-      <nav class="nav" aria-label="Main navigation">
-        <p class="nav-label">Workspace</p>
-        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
-        <button class="nav-item" data-view="tasks"><span>✓</span> Tasks <b class="nav-count" id="taskCount">0</b></button>
-        <button class="nav-item" data-view="notes"><span>▤</span> Notes</button>
-        <button class="nav-item" data-view="subjects"><span>◈</span> Subjects</button>
-        <button class="nav-item" data-view="planner"><span>□</span> Planner</button>
-        <p class="nav-label">Focus</p>
-        <button class="nav-item" data-view="focus"><span>◷</span> Focus timer</button>
-        <button class="nav-item" data-view="stats"><span>↗</span> Statistics</button>
-      </nav>
-      <div class="sidebar-bottom"><div class="streak-mini"><span class="fire">♨</span><div><strong id="sideStreak">0 day streak</strong><small>Keep the momentum</small></div></div><button class="theme-button" id="themeToggle" type="button">☾ <span>Dark mode</span></button><p class="privacy-note">⌁ Stored locally on this device</p></div>
-    </aside>
-    <div class="backdrop" id="backdrop"></div>
-    <main class="main-content">
-      <header class="topbar"><button class="menu-button" id="openSidebar" aria-label="Open menu">☰</button><div class="breadcrumb">Workspace <span>/</span> <strong id="pageName">Dashboard</strong></div><div class="top-actions"><button class="icon-button" id="exportBtn" title="Export backup">⇩<span class="tooltip">Export backup</span></button><label class="icon-button" title="Import backup">⇧<input id="importInput" type="file" accept="application/json" hidden><span class="tooltip">Import backup</span></label><div class="avatar">S</div></div></header>
-      <div class="content-wrap">
-        <section class="view active" id="dashboardView">
-          <div class="welcome-row"><div><p class="overline">Your private workspace</p><h1>Good morning, <em>scholar.</em></h1><p class="muted">Make today count. One focused session at a time.</p></div><button class="primary" data-view="focus">Start focus session <span>→</span></button></div>
-          <div class="stat-grid"><article class="stat-card accent"><span class="stat-icon">◷</span><div><small>Focus time</small><strong id="dashFocus">0m</strong><span class="trend">Today</span></div></article><article class="stat-card"><span class="stat-icon purple">✓</span><div><small>Tasks complete</small><strong id="dashTasks">0/0</strong><span class="trend" id="dashTaskTrend">Start your list</span></div></article><article class="stat-card"><span class="stat-icon orange">♨</span><div><small>Study streak</small><strong id="dashStreak">0 days</strong><span class="trend">Best: <span id="bestStreak">0</span> days</span></div></article><article class="stat-card"><span class="stat-icon blue">◈</span><div><small>Overall progress</small><strong id="dashProgress">0%</strong><span class="trend">Across subjects</span></div></article></div>
-          <div class="dashboard-grid"><article class="panel progress-panel"><div class="panel-head"><div><p class="overline">Daily progress</p><h2>Your day at a glance</h2></div><span class="date-pill">Today</span></div><div class="daily-progress"><div class="ring" id="dailyRing"><strong id="dailyPercent">0%</strong><small>complete</small></div><div class="progress-copy"><h3 id="dailyHeadline">A fresh start.</h3><p>Complete your tasks and log a focus session to fill your day.</p><div class="bar"><span id="dailyBar"></span></div><small><b id="dailyDone">0</b> of <b id="dailyTotal">0</b> planned tasks</small></div></div></article><article class="panel today-panel"><div class="panel-head"><div><p class="overline">Up next</p><h2>Today’s plan</h2></div><button class="link-button" data-view="planner">View planner →</button></div><div id="upNext" class="up-next"></div></article></div>
-          <div class="dashboard-grid lower"><article class="panel chart-panel"><div class="panel-head"><div><p class="overline">Consistency</p><h2>Weekly focus</h2></div><span class="legend"><i></i> Minutes</span></div><div class="chart" id="weeklyChart"></div></article><article class="panel quick-panel"><div class="panel-head"><div><p class="overline">Quick capture</p><h2>What’s on your mind?</h2></div></div><textarea id="quickNote" placeholder="Jot down a thought, idea, or reminder..." rows="3"></textarea><div class="quick-footer"><span>Saved privately in Notes</span><button class="primary small" id="saveQuick">Save note <span>↗</span></button></div></article></div>
-        </section>
-        <section class="view" id="tasksView"><div class="view-heading"><div><p class="overline">Workspace / Tasks</p><h1>Task <em>manager.</em></h1><p class="muted">Turn intentions into small, finishable steps.</p></div><button class="primary" id="addTaskBtn">＋ New task</button></div><div class="toolbar"><div class="filter-tabs" id="taskFilters"><button class="active" data-filter="all">All</button><button data-filter="today">Today</button><button data-filter="active">Active</button><button data-filter="done">Completed</button></div><div class="search-wrap">⌕<input id="taskSearch" placeholder="Search tasks..."></div></div><div class="task-list" id="taskList"></div></section>
-        <section class="view" id="notesView"><div class="view-heading"><div><p class="overline">Workspace / Notes</p><h1>Your second <em>brain.</em></h1><p class="muted">Capture ideas before they drift away.</p></div><button class="primary" id="addNoteBtn">＋ New note</button></div><div class="search-wrap wide">⌕<input id="noteSearch" placeholder="Search your notes..."></div><div class="notes-grid" id="notesGrid"></div></section>
-        <section class="view" id="subjectsView"><div class="view-heading"><div><p class="overline">Workspace / Subjects</p><h1>Build your <em>edge.</em></h1><p class="muted">See where your study energy is going.</p></div><button class="primary" id="addSubjectBtn">＋ Add subject</button></div><div class="subject-grid" id="subjectGrid"></div></section>
-        <section class="view" id="plannerView"><div class="view-heading"><div><p class="overline">Workspace / Planner</p><h1>Plan with <em>intention.</em></h1><p class="muted">A simple view of what deserves your attention.</p></div><button class="primary" id="addPlanBtn">＋ Add plan</button></div><div class="planner-layout"><div class="calendar panel"><div class="calendar-head"><button class="icon-button" id="prevMonth">←</button><h2 id="monthTitle"></h2><button class="icon-button" id="nextMonth">→</button></div><div class="weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="calendar-grid" id="calendarGrid"></div></div><div class="panel plan-list"><div class="panel-head"><div><p class="overline">Selected day</p><h2 id="selectedDate">Today</h2></div></div><div id="dayPlans"></div></div></div></section>
-        <section class="view" id="focusView"><div class="view-heading"><div><p class="overline">Focus / Pomodoro</p><h1>Deep work, <em>made simple.</em></h1><p class="muted">Protect your attention. The rest can wait.</p></div></div><div class="focus-layout"><div class="timer-card panel"><div class="timer-mode"><button class="active" data-minutes="25">Focus</button><button data-minutes="5">Short break</button><button data-minutes="15">Long break</button></div><div class="timer-ring" id="timerRing"><div><strong id="timerDisplay">25:00</strong><span id="timerLabel">Ready when you are</span></div></div><div class="timer-actions"><button class="primary" id="timerStart">Start timer</button><button class="secondary" id="timerReset">Reset</button></div><p class="timer-session">Sessions today: <b id="sessionCount">0</b> · Focused: <b id="focusMinutes">0</b> min</p></div><div class="panel focus-tips"><p class="overline">A better session</p><h2>Set the bar low.<br><em>Show up anyway.</em></h2><ul><li><span>01</span>Choose one clearly defined task.</li><li><span>02</span>Put your phone somewhere inconvenient.</li><li><span>03</span>When the timer ends, take a real break.</li></ul></div></div></section>
-        <section class="view" id="statsView"><div class="view-heading"><div><p class="overline">Focus / Statistics</p><h1>Small steps, <em>compounded.</em></h1><p class="muted">Your progress is proof that consistency works.</p></div></div><div class="stats-layout"><article class="panel big-chart"><div class="panel-head"><div><p class="overline">Last 7 days</p><h2>Focus minutes</h2></div><strong class="chart-total" id="chartTotal">0m</strong></div><div class="large-bars" id="largeBars"></div></article><article class="panel subject-summary"><div class="panel-head"><div><p class="overline">Distribution</p><h2>Subject progress</h2></div></div><div id="subjectSummary"></div></article></div></section>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Caption Forge home">
+      <span class="brand-mark">✦</span>
+      <span>Caption <b>Forge</b></span>
+    </a>
+    <span class="privacy">
+      <span class="status-dot"></span>
+      Runs entirely in your browser
+    </span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">PRIVATE SUBTITLE TOOLKIT</p>
+      <h1>Convert captions.<br><em>Keep control.</em></h1>
+      <p class="lede">
+        Move between SRT, VTT, ASS, TTML, JSON, and plain text without
+        uploading anything. Fast, free, and offline-friendly.
+      </p>
+    </section>
+
+    <section class="workspace" aria-label="Subtitle converter">
+      <div
+        class="dropzone"
+        id="dropzone"
+        tabindex="0"
+        role="button"
+        aria-label="Choose a subtitle file"
+      >
+        <input
+          type="file"
+          id="fileInput"
+          accept=".srt,.vtt,.ass,.ssa,.ttml,.xml,.json,.txt,text/*"
+          hidden
+        >
+
+        <div class="upload-icon">↑</div>
+        <h2>Drop a caption file here</h2>
+        <p>
+          or
+          <button class="inline-button" id="browseButton" type="button">
+            browse your device
+          </button>
+        </p>
+        <small>SRT · WebVTT · ASS/SSA · TTML · JSON · TXT</small>
       </div>
-    </main>
-  </div>
-  <div class="modal-backdrop" id="modalBackdrop"><div class="modal" role="dialog" aria-modal="true"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
-  <div class="toast" id="toast" role="status"></div>
+
+      <div class="file-row hidden" id="fileRow">
+        <div class="file-icon">▤</div>
+        <div class="file-meta">
+          <strong id="fileName">—</strong>
+          <span id="fileInfo">—</span>
+        </div>
+        <button
+          class="icon-button"
+          id="removeFile"
+          type="button"
+          aria-label="Remove file"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="controls">
+        <label>
+          Input format
+          <select id="inputFormat">
+            <option value="auto">Auto-detect</option>
+            <option value="srt">SRT</option>
+            <option value="vtt">WebVTT</option>
+            <option value="ass">ASS / SSA</option>
+            <option value="ttml">TTML</option>
+            <option value="json">JSON</option>
+            <option value="txt">Plain text</option>
+          </select>
+        </label>
+
+        <span class="swap" aria-hidden="true">→</span>
+
+        <label>
+          Convert to
+          <select id="outputFormat">
+            <option value="srt">SRT</option>
+            <option value="vtt">WebVTT</option>
+            <option value="ass">ASS</option>
+            <option value="ttml">TTML</option>
+            <option value="json">JSON</option>
+            <option value="txt">Plain text</option>
+          </select>
+        </label>
+
+        <button class="primary" id="convertButton" type="button" disabled>
+          Convert &amp; download <span>↓</span>
+        </button>
+      </div>
+
+      <div class="message" id="message" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="features">
+      <article>
+        <span>01</span>
+        <h3>Local by default</h3>
+        <p>Your captions never leave this device. There is no server and no tracking.</p>
+      </article>
+
+      <article>
+        <span>02</span>
+        <h3>Useful formats</h3>
+        <p>Preserve timing and readable text across the formats video tools actually use.</p>
+      </article>
+
+      <article>
+        <span>03</span>
+        <h3>One-click export</h3>
+        <p>Choose your destination format and download a clean, ready-to-use file.</p>
+      </article>
+    </section>
+
+    <p class="tip">
+      Tip: You can also paste a file onto the drop area. Large files are handled locally too.
+    </p>
+  </main>
+
+  <footer>
+    <span>Caption Forge</span>
+    <span>Open source · No uploads · Works offline</span>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
