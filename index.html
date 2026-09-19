@@ -3,141 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09111f">
-  <meta name="description" content="Caption Forge converts subtitle files privately in your browser.">
-  <title>Caption Forge — subtitle converter</title>
+  <meta name="theme-color" content="#080b14">
+  <meta name="description" content="QR Code Studio — create beautiful QR codes privately in your browser.">
+  <title>QR Code Studio — Create beautiful QR codes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
   <header class="site-header">
-    <a class="brand" href="./" aria-label="Caption Forge home">
-      <span class="brand-mark">✦</span>
-      <span>Caption <b>Forge</b></span>
+    <a class="brand" href="./" aria-label="QR Code Studio home">
+      <span class="brand-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span>QR Code <b>Studio</b></span>
     </a>
-    <span class="privacy">
-      <span class="status-dot"></span>
-      Runs entirely in your browser
-    </span>
+    <div class="privacy-pill"><span class="pulse"></span> 100% local &amp; private</div>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <p class="eyebrow">PRIVATE SUBTITLE TOOLKIT</p>
-      <h1>Convert captions.<br><em>Keep control.</em></h1>
-      <p class="lede">
-        Move between SRT, VTT, ASS, TTML, JSON, and plain text without
-        uploading anything. Fast, free, and offline-friendly.
-      </p>
+    <section class="intro">
+      <p class="eyebrow">DESIGN YOUR CONNECTION</p>
+      <h1>Make it <span>scan-worthy.</span></h1>
+      <p class="lede">Create polished, custom QR codes for links, menus, profiles, and anything worth sharing.</p>
     </section>
 
-    <section class="workspace" aria-label="Subtitle converter">
-      <div
-        class="dropzone"
-        id="dropzone"
-        tabindex="0"
-        role="button"
-        aria-label="Choose a subtitle file"
-      >
-        <input
-          type="file"
-          id="fileInput"
-          accept=".srt,.vtt,.ass,.ssa,.ttml,.xml,.json,.txt,text/*"
-          hidden
-        >
-
-        <div class="upload-icon">↑</div>
-        <h2>Drop a caption file here</h2>
-        <p>
-          or
-          <button class="inline-button" id="browseButton" type="button">
-            browse your device
-          </button>
-        </p>
-        <small>SRT · WebVTT · ASS/SSA · TTML · JSON · TXT</small>
-      </div>
-
-      <div class="file-row hidden" id="fileRow">
-        <div class="file-icon">▤</div>
-        <div class="file-meta">
-          <strong id="fileName">—</strong>
-          <span id="fileInfo">—</span>
+    <section class="studio" aria-label="QR code generator">
+      <div class="panel controls-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-label">01 / CONTENT</p>
+            <h2>What do you want to share?</h2>
+          </div>
+          <span class="live-badge">LIVE</span>
         </div>
-        <button
-          class="icon-button"
-          id="removeFile"
-          type="button"
-          aria-label="Remove file"
-        >
-          ×
-        </button>
+
+        <label class="field-label" for="qrText">Text or URL</label>
+        <div class="textarea-wrap">
+          <textarea id="qrText" rows="4" maxlength="1000" placeholder="https://yourwebsite.com">https://qr-code.studio</textarea>
+          <span id="charCount">21 / 1000</span>
+        </div>
+
+        <div class="divider"></div>
+        <p class="section-label">02 / STYLE</p>
+        <div class="color-grid">
+          <label class="color-control">
+            <span>Foreground</span>
+            <span class="color-input"><input type="color" id="foreground" value="#121827"><code id="foregroundValue">#121827</code></span>
+          </label>
+          <label class="color-control">
+            <span>Background</span>
+            <span class="color-input"><input type="color" id="background" value="#ffffff"><code id="backgroundValue">#FFFFFF</code></span>
+          </label>
+        </div>
+
+        <div class="range-row">
+          <label class="field-label" for="size">Canvas size <output id="sizeValue">360 px</output></label>
+          <input type="range" id="size" min="180" max="720" step="10" value="360">
+        </div>
+
+        <label class="field-label" for="level">Error correction</label>
+        <select id="level">
+          <option value="L">Low — 7%</option>
+          <option value="M" selected>Medium — 15%</option>
+          <option value="Q">Quartile — 25%</option>
+          <option value="H">High — 30% (best for logos)</option>
+        </select>
+
+        <div class="divider"></div>
+        <div class="logo-heading">
+          <div><p class="section-label">03 / BRANDING</p><h2>Add a center logo</h2></div>
+          <label class="switch"><input type="checkbox" id="logoToggle"><span></span></label>
+        </div>
+        <div class="logo-upload is-disabled" id="logoUpload">
+          <input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" disabled>
+          <span class="upload-symbol">＋</span>
+          <span id="logoLabel">Upload PNG or JPG</span>
+          <button type="button" id="removeLogo" class="remove-logo" hidden aria-label="Remove logo">×</button>
+        </div>
+
+        <button class="reset-button" id="resetButton" type="button">↺ Reset to defaults</button>
       </div>
 
-      <div class="controls">
-        <label>
-          Input format
-          <select id="inputFormat">
-            <option value="auto">Auto-detect</option>
-            <option value="srt">SRT</option>
-            <option value="vtt">WebVTT</option>
-            <option value="ass">ASS / SSA</option>
-            <option value="ttml">TTML</option>
-            <option value="json">JSON</option>
-            <option value="txt">Plain text</option>
-          </select>
-        </label>
-
-        <span class="swap" aria-hidden="true">→</span>
-
-        <label>
-          Convert to
-          <select id="outputFormat">
-            <option value="srt">SRT</option>
-            <option value="vtt">WebVTT</option>
-            <option value="ass">ASS</option>
-            <option value="ttml">TTML</option>
-            <option value="json">JSON</option>
-            <option value="txt">Plain text</option>
-          </select>
-        </label>
-
-        <button class="primary" id="convertButton" type="button" disabled>
-          Convert &amp; download <span>↓</span>
-        </button>
+      <div class="panel preview-panel">
+        <div class="preview-topline"><span class="section-label">PREVIEW</span><span class="scan-status"><i></i> Ready to scan</span></div>
+        <div class="qr-stage" id="qrStage"><div id="qrcode" aria-label="Generated QR code"></div><div class="empty-state" id="emptyState">Enter content to generate</div></div>
+        <div class="preview-meta"><div><span>FORMAT</span><strong>PNG IMAGE</strong></div><div><span>SIZE</span><strong id="metaSize">360 × 360</strong></div><div><span>QUALITY</span><strong id="metaLevel">MEDIUM</strong></div></div>
+        <button class="download-button" id="downloadButton" type="button"><span>Download PNG</span><b>↓</b></button>
+        <p class="local-note"><span>✦</span> Your content never leaves this browser.</p>
       </div>
-
-      <div class="message" id="message" role="status" aria-live="polite"></div>
     </section>
 
-    <section class="features">
-      <article>
-        <span>01</span>
-        <h3>Local by default</h3>
-        <p>Your captions never leave this device. There is no server and no tracking.</p>
-      </article>
-
-      <article>
-        <span>02</span>
-        <h3>Useful formats</h3>
-        <p>Preserve timing and readable text across the formats video tools actually use.</p>
-      </article>
-
-      <article>
-        <span>03</span>
-        <h3>One-click export</h3>
-        <p>Choose your destination format and download a clean, ready-to-use file.</p>
-      </article>
+    <section class="feature-strip">
+      <div><span class="feature-number">01</span><strong>Instantly generated</strong><p>See every change as you make it.</p></div>
+      <div><span class="feature-number">02</span><strong>Made for your brand</strong><p>Colors, sizing, and logo support.</p></div>
+      <div><span class="feature-number">03</span><strong>Ready to share</strong><p>Export a crisp PNG in one click.</p></div>
     </section>
-
-    <p class="tip">
-      Tip: You can also paste a file onto the drop area. Large files are handled locally too.
-    </p>
   </main>
 
-  <footer>
-    <span>Caption Forge</span>
-    <span>Open source · No uploads · Works offline</span>
-  </footer>
+  <footer><span>QR Code Studio</span><span>Built for the web · No uploads · No tracking</span></footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
